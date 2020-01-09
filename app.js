@@ -1,7 +1,7 @@
 
 const config = {
-  width: 500,
-  height: 300,
+  width: 900,
+  height: 500,
   type: Phaser.AUTO,
   physics: {
     default: 'arcade',
@@ -21,11 +21,13 @@ let dude;
 let cursors;
 
 function preload(){
-  this.load.image('dude','./images/bomb.png');
+  this.load.image('back', './images/sky.jpg')
+  this.load.image('dude', './images/bomb.png')
 }
 
 function create(){
 
+  this.add.image(00, 100, 'back');
   // this.add.image(100, 100, 'dude').setScrollFactor(0);
   // dude.scale.setTo(0.8,0.8)
   dude = this.physics.add.image(100, 100, 'dude')
