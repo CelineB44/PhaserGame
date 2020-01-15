@@ -21,6 +21,7 @@ let cursors;
 let platforms;
 let stars;
 let bombs;
+let music;
 let score = 0;
 let gameOver = false;
 let scoreText;
@@ -36,11 +37,17 @@ function preload(){
   this.load.spritesheet('dude', './images/assets/perso/frame_gauche.png', { frameWidth: 50, frameHeight: 90 })
   this.load.spritesheet('dude2', './images/assets/ennemidroit.png', { frameWidth: 50, frameHeight: 90 });
 
+  this.load.audio('theme', './music/fantasy.mp3')
+  this.load.audio('dead', './music/dead.mp3')
 }
 
 function create(){
 
+  music = this.sound.add ('theme');
   this.add.image(00, 100, 'back');
+
+  music.play();
+
   platforms = this.physics.add.staticGroup();
 
   platforms.create(400, 568).setScale(2).refreshBody();
@@ -93,8 +100,8 @@ stars.children.iterate(function (child) {
 
 bombs = this.physics.add.group({
     key: 'bomb',
-    repeat: 0,
-    setXY: { x: 150, y: 0, stepX:98 }
+    repeat: 2,
+    setXY: { x: 150, y: 130, stepX:200 }
 });
 
 scoreText = this.add.text(650, 16, 'Level 1: 0', { fontSize: '42px', fill: '#FFFFFF' })
@@ -110,9 +117,21 @@ this.physics.add.collider(player, bombs, hitBomb, null, this)
 
 function update() {
   if (gameOver){
-    return;
+    this.add.text(220, 210, 'Game Over Looser!', 
+    { fontFamily: 'Verdana',
+      fontSize: 35 + 'px',
+      color: 'black',
+    }).setScrollFactor(0);
+    music.stop();
+  }  
+  if (score === 70) {
+    this.add.text (220, 210, 'You win!!',
+    { fontFamily: 'Verdana',
+    fontSize: 35 + 'px',
+    color: 'black',
+    }).setScrollFactor(0);
+    music.stop()
   }
-
   if(cursors.left.isDown) {
     player.setVelocityX(-160);
     player.anims.play('left', true);
