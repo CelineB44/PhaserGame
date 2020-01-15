@@ -1,4 +1,3 @@
-
 const config = {
   width: 900,
   height: 500,
@@ -17,6 +16,7 @@ const config = {
 }
 
 let player;
+let ennemy;
 let cursors;
 let platforms;
 let stars;
@@ -30,9 +30,12 @@ const game = new Phaser.Game(config)
 function preload(){
   this.load.image('back', './images/sky.jpg')
   this.load.image('ground', './images/cloud.png')
-  this.load.image('bombs', './images/assets/bomb.png')
-  this.load.spritesheet('dude', './images/assets/perso/frame_gauche.png', { frameWidth: 50, frameHeight: 90 })
+  this.load.image('bomb', './images/assets/bomb.png')
   this.load.image('star', './images/assets/star.png')
+
+  this.load.spritesheet('dude', './images/assets/perso/frame_gauche.png', { frameWidth: 50, frameHeight: 90 })
+  this.load.spritesheet('dude2', './images/assets/ennemidroit.png', { frameWidth: 50, frameHeight: 90 });
+
 }
 
 function create(){
@@ -49,10 +52,12 @@ function create(){
   platforms.create(450, 250, 'ground');
 
   player = this.physics.add.sprite(100, 450, 'dude');
+  ennemy = this.physics.add.sprite(800, 450, 'dude2');
 //  player.setScale(1); 
 
   // player.setBounce(0,1);
   player.setCollideWorldBounds(true);
+  ennemy.setCollideWorldBounds(true);
 
 // this.anims.create({
 //     key: 'left',
@@ -86,7 +91,11 @@ stars.children.iterate(function (child) {
     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 });
 
-bombs = this.physics.add.group();
+bombs = this.physics.add.group({
+    key: 'bomb',
+    repeat: 0,
+    setXY: { x: 150, y: 0, stepX:98 }
+});
 
 scoreText = this.add.text(650, 16, 'Level 1: 0', { fontSize: '42px', fill: '#FFFFFF' })
 
@@ -152,7 +161,3 @@ function hitBomb (player, bomb) {
     player.anims.play('turn');
     gameOver = true;
 }
-
-
-  // this.add.image(100, 100, 'dude').setScrollFactor(0);
-  // dude.scale.setTo(0.8,0.8)
