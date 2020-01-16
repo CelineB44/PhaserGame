@@ -1,3 +1,7 @@
+// import TitleScene from './TitleScene';
+
+// let titleScene = new TitleScene();
+
 const config = {
   width: 900,
   height: 500,
@@ -27,14 +31,17 @@ let gameOver = false;
 let scoreText;
 
 const game = new Phaser.Game(config)
+// game.scene.add('TitleScene', titleScene);
+// game.scene.start('TitleScene');
 
 function preload(){
   this.load.image('back', './images/sky.jpg')
   this.load.image('ground', './images/cloud.png')
   this.load.image('bomb', './images/assets/bomb.png')
   this.load.image('star', './images/assets/star.png')
+  // this.load.image('dude2', './images/animated.gif')
 
-  this.load.spritesheet('dude', './images/assets/perso/frame_gauche.png', { frameWidth: 50, frameHeight: 90 })
+  this.load.spritesheet('dude', './images/assets/perso/sprite3.png', { frameWidth: 64, frameHeight: 80 })
   this.load.spritesheet('dude2', './images/assets/ennemidroit.png', { frameWidth: 50, frameHeight: 90 });
 
   this.load.audio('theme', './music/fantasy.mp3')
@@ -66,6 +73,7 @@ function create(){
   player.setCollideWorldBounds(true);
   ennemy.setCollideWorldBounds(true);
 
+ 
 // this.anims.create({
 //     key: 'left',
 //     frames: this.anims.generateFrameNumbers('dude', { start: './images/assets/perso/frame_gauche.png', end:  }),
@@ -75,16 +83,22 @@ function create(){
 
 this.anims.create({
     key: 'turn',
-    frames: [ { key: 'dude', frame: 1 } ],
+    frames: [ { key: 'dude', frame: 3 } ],
     frameRate: 20
 });
 
-// this.anims.create({
-//     key: 'right',
-//     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-//     frameRate: 10,
-//     repeat: -1
-// });
+this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 3 }),
+    frameRate: 10,
+    repeat: -1
+});
+this.anims.create({
+  key: 'left',
+  frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 3 }),
+  frameRate: 10,
+  repeat: -1
+});
 
 cursors = this.input.keyboard.createCursorKeys();
 
@@ -104,14 +118,16 @@ bombs = this.physics.add.group({
     setXY: { x: 150, y: 130, stepX:200 }
 });
 
+
 scoreText = this.add.text(650, 16, 'Level 1: 0', { fontSize: '42px', fill: '#FFFFFF' })
 
 this.physics.add.collider(player, platforms);
+this.physics.add.collider(player, ennemy);
 this.physics.add.collider(stars, platforms);
 this.physics.add.collider(bombs, platforms);
 
 this.physics.add.overlap(player, stars, collectStar, null, this);
-this.physics.add.collider(player, bombs, hitBomb, null, this)
+this.physics.add.collider(player, bombs, hitBomb, null, this);
 
 }
 
