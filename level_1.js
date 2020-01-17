@@ -127,6 +127,7 @@ this.physics.add.collider(stars, platforms);
 this.physics.add.collider(bombs, platforms);
 
 this.physics.add.overlap(player, stars, collectStar, null, this);
+this.physics.add.collider(player, ennemy, hitEnnemy, null, this);
 this.physics.add.collider(player, bombs, hitBomb, null, this);
 
 }
@@ -163,12 +164,16 @@ function update() {
     player.anims.play('turn');
   }
 
-  // if (cursors.up.isDown && player.body.touching.down) 
   if (cursors.up.isDown) {
     player.setVelocityY(-400);
   }
-}
 
+  if (ennemy){
+    ennemy.setVelocityY.auto(-400)
+  }
+
+}
+//catch stars
 function collectStar (player, star) {
   star.disableBody(true, true);
 
@@ -189,10 +194,11 @@ function collectStar (player, star) {
     bomb.allowGravity = false;
   }
 }
-
+//collision et point de degat bombes
 function hitBomb (player, bomb) {
     this.physics.pause();
     player.setTint(0xff0000);
     player.anims.play('turn');
     gameOver = true;
 }
+//collision et degat avec ennemy
